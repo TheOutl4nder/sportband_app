@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<bluetoothModel>(create: (_)=>bluetoothModel(ble),
-    child: MaterialApp(home: SessionPage(),),);
+    child:  MaterialApp(home: SessionPage(),theme: ThemeData(primaryColor: Color(0xFFF85F6A)),),);
   }
 }
 

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
+import 'package:sportband_app/sessionStats.dart';
 
 class Reading{
     double axis_X;
@@ -25,14 +26,14 @@ class bluetoothModel with ChangeNotifier{
   late StreamSubscription _subscription;
   late StreamSubscription<ConnectionStateUpdate> _connection;
   late Reading _currentReading;
-  late String _recommendation;
-  
+  late String _recAng;
+  late String _recSpe;
+
   bluetoothModel(this._ble){
-    _connectBLE();
+    //_connectBLE();
   }
 
   void _connectBLE(){
-    _recommendation = "Loading";
     notifyListeners();
     _subscription.cancel();
     _subscription = _ble.scanForDevices(
@@ -44,7 +45,6 @@ class bluetoothModel with ChangeNotifier{
             await _connection.cancel();
           } on Exception catch (e, _) {
             print("Error disconnecting from a device: $e");
-            _recommendation = e.toString();
             notifyListeners();
           }
         }
@@ -71,14 +71,15 @@ class bluetoothModel with ChangeNotifier{
                 ddata.add(val/1000000);
               }
               _currentReading = Reading(ddata[0], ddata[1], ddata[2], ddata[3], ddata[4], ddata[5]);
-              _recommendation = generateRecommendation(_currentReading);
+              _recAng = generateRecommendation(_currentReading);
+              _recSpe = generateRecommendation(_currentReading);
+              currentRecommendation = recommendation(_recAng, _recSpe);
               notifyListeners();
 
             }, onError: (dynamic error) {
               // code to handle errors
               print('error subscribing characteristic!');
               print(error.toString());
-              _recommendation = error.toString();
               notifyListeners();
 
             });
@@ -89,7 +90,6 @@ class bluetoothModel with ChangeNotifier{
           // Handle a possible error
           print('error connecting!');
           print(error.toString());
-          _recommendation = error.toString();
           notifyListeners();
 
         });
@@ -97,7 +97,6 @@ class bluetoothModel with ChangeNotifier{
     }, onError: (error) {
       print('error scanning!');
       print(error.toString());
-      _recommendation = error.toString();
       notifyListeners();
 
     });
@@ -106,4 +105,6 @@ class bluetoothModel with ChangeNotifier{
   generateRecommendation(Reading reading){
     return "Very good!";
   }
+
+  
 }
