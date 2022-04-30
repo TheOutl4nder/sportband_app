@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
+import 'package:sportband_app/login.dart';
 import 'package:sportband_app/models/bluetoothModel.dart';
 import 'package:sportband_app/sessionPage.dart';
 
@@ -15,12 +16,14 @@ void main() async{
   );
 }
 
+const mainColor=Color(0xFFF85F6A);
+
 class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<bluetoothModel>(create: (_)=>bluetoothModel(ble),
-    child:  MaterialApp(home: SessionPage(),theme: ThemeData(primaryColor: Color(0xFFF85F6A)),),);
+    child:  MaterialApp(home: LoginPage(),theme: ThemeData(primaryColor: mainColor,),),);
   }
 }
 

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sportband_app/login.dart';
 import 'package:sportband_app/models/bluetoothModel.dart';
 import 'package:provider/provider.dart';
 import 'package:sportband_app/sessionStats.dart';
@@ -43,7 +44,7 @@ class _SessionPageState extends State<SessionPage> {
           return Text(displayTime, style: TextStyle(fontSize: 36,));
         })],mainAxisAlignment: MainAxisAlignment.spaceEvenly,)]),
           
-        )
+        ),
         
       ],padding: EdgeInsets.all(40.0),),
     );
