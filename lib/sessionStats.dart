@@ -45,16 +45,22 @@ class SessionStats extends StatelessWidget {
           Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Ángulo: "+currentRecommendation.angleRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
           Row(children: [Container(height: 18,)],),
           Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Velocidad: "+currentRecommendation.speedRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
-          Row(children: [Container(height: 120,)],),
+          Row(children: [Container(height: 80,)],),
+
         ],);
   }
 }
 
-postData() async{
+postData(Reading read) async{
   var response = http.post(Uri.parse("https://api.thingspeak.com/update.json"),
     body: {
     "api_key": dotenv.env['APIKEY'],
-    "field1": "75"
+    "axisX": read.axis_X,
+    "axisY": read.axis_Y,
+    "axisZ": read.axis_Z,
+    "accX": read.acc_X,
+    "accY": read.acc_Y,
+    "accZ": read.acc_Z,
   });
   print(response);
 }
@@ -66,6 +72,13 @@ startSession(){
   currentRecommendation=recommendation("", "");
   sessionOngoing = true;
   currentSession.sessionTime= Duration.zero;
+}
+
+stopSession(){
+  for(Reading hit in currentSession.sessionHits){
+    postData(hit);
+  }
+  sessionOngoing = false;
 }
 
 getMonthStr(int month){

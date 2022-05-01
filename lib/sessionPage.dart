@@ -42,7 +42,9 @@ class _SessionPageState extends State<SessionPage> {
           final value = snapshot.data;
           final displayTime = StopWatchTimer.getDisplayTime(value!,);
           return Text(displayTime, style: TextStyle(fontSize: 36,));
-        })],mainAxisAlignment: MainAxisAlignment.spaceEvenly,)]),
+        })],mainAxisAlignment: MainAxisAlignment.spaceEvenly,),
+        Row(children: [MaterialButton(onPressed: ()=>setState(() {stopSession();_stopWatchTimer.onExecute.add(StopWatchExecute.stop);}),child: Text("Finalizar sesión",style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 20)),)],mainAxisAlignment: MainAxisAlignment.center,)],),
+        
           
         ),
         
