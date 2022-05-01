@@ -55,12 +55,12 @@ postData(Reading read) async{
   var response = http.post(Uri.parse("https://api.thingspeak.com/update.json"),
     body: {
     "api_key": dotenv.env['APIKEY'],
-    "axisX": read.axis_X,
-    "axisY": read.axis_Y,
-    "axisZ": read.axis_Z,
-    "accX": read.acc_X,
-    "accY": read.acc_Y,
-    "accZ": read.acc_Z,
+    "field1": read.axis_X,
+    "field2": read.axis_Y,
+    "field3": read.axis_Z,
+    "field4": read.acc_X,
+    "field5": read.acc_Y,
+    "field6": read.acc_Z,
   });
   print(response);
 }
