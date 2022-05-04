@@ -23,22 +23,23 @@ class bluetoothModel with ChangeNotifier{
   final flutterReactiveBle = FlutterReactiveBle();
 
   FlutterReactiveBle _ble;
-  late StreamSubscription _subscription;
+  StreamSubscription? _subscription;
   late StreamSubscription<ConnectionStateUpdate> _connection;
   late Reading _currentReading;
   late String _recAng;
   late String _recSpe;
 
   bluetoothModel(this._ble){
-    //_connectBLE();
+
+    _connectBLE();
   }
 
   void _connectBLE(){
     notifyListeners();
-    _subscription.cancel();
+    _subscription?.cancel();
     _subscription = _ble.scanForDevices(
-        withServices: [Uuid.parse("181A")]).listen((device) async {
-      if (device.name == 'SMARTBAND') {
+        withServices: [Uuid.parse("1234")]).listen((device) async {
+      if (device.name == 'HC-05') {
         print('Smartband found!');
         if (_connection != null) {
           try {
@@ -60,7 +61,7 @@ class bluetoothModel with ChangeNotifier{
               DeviceConnectionState.connected) {
             final characteristic = QualifiedCharacteristic(
                 serviceId: Uuid.parse("181A"),
-                characteristicId: Uuid.parse("2A6E"),
+                characteristicId: Uuid.parse("1234"),
                 deviceId: device.id);
             _ble.subscribeToCharacteristic(characteristic).listen((data) {
               // code to handle incoming data
