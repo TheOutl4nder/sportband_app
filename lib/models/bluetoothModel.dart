@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -101,11 +102,14 @@ class bluetoothModel with ChangeNotifier{
       notifyListeners();
 
     });
-  }
-
-  generateRecommendation(Reading reading){
-    return "Very good!";
-  }
-
-  
+  }  
 }
+
+generateRecommendation(Reading reading){
+    Random rand = new Random();
+    int i = rand.nextInt(2);
+    if(i>0)
+      return "Very good!";
+    else
+      return "Very bad!";
+  }

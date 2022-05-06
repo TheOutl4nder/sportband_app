@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sportband_app/models/bluetoothModel.dart';
 import 'package:provider/provider.dart';
+import 'package:sportband_app/models/statsModel.dart';
 import 'package:sportband_app/sessionPage.dart';
 
 class sessionData{
@@ -28,6 +29,7 @@ late Timer _timer;
 
 late sessionData currentSession;
 late recommendation currentRecommendation;
+var myStats=statsModel();
 
 class SessionStats extends StatelessWidget {
   const SessionStats({Key? key}) : super(key: key);
@@ -35,16 +37,17 @@ class SessionStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blue = Provider.of<bluetoothModel>(context);
+    myStats = Provider.of<statsModel>(context);
     return Column(children: [
           Row(children: [Text("Sesión del "+currentSession.sessionStart.day.toString()+" de "+getMonthStr(currentSession.sessionStart.month),style: TextStyle(color: Colors.black,fontSize: 24,),)], mainAxisAlignment: MainAxisAlignment.center,),
           Row(children: [Container(height: 36,)],),
-          Row(children: [Text("Golpe "+(currentSession.sessionHits.length+1).toString(),style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 36),)],),
+          Row(children: [Text("Golpe "+(myStats.HitCount+1).toString(),style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 36),)],),
           Row(children: [Container(height: 20,)],),
           Row(children: [Text("Recomendación:",style: TextStyle(color: Colors.black,fontSize: 24,))],),
           Row(children: [Container(height: 20,)],),
-          Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Ángulo: "+currentRecommendation.angleRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
+          Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Ángulo: "+myStats.axisRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
           Row(children: [Container(height: 18,)],),
-          Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Velocidad: "+currentRecommendation.speedRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
+          Row(children: [Icon(Icons.info,color: Theme.of(context).primaryColor,),Text("Velocidad: "+myStats.accRec,style: TextStyle(color: Colors.black,fontSize: 18,),)],mainAxisAlignment: MainAxisAlignment.start,),
           Row(children: [Container(height: 80,)],),
 
         ],);
@@ -55,14 +58,14 @@ postData(Reading read) async{
   var response = http.post(Uri.parse("https://api.thingspeak.com/update.json"),
     body: {
     "api_key": dotenv.env['APIKEY'],
-    "field1": read.axis_X,
-    "field2": read.axis_Y,
-    "field3": read.axis_Z,
-    "field4": read.acc_X,
-    "field5": read.acc_Y,
-    "field6": read.acc_Z,
+    "field1": read.axis_X.toString(),
+    "field2": read.axis_Y.toString(),
+    "field3": read.axis_Z.toString(),
+    "field4": read.acc_X.toString(),
+    "field5": read.acc_Y.toString(),
+    "field6": read.acc_Z.toString(),
   });
-  print(response);
+  print(response.toString());
 }
 
 startSession(){
@@ -109,4 +112,8 @@ getMonthStr(int month){
       return "Diciembre";
 
   }
+}
+
+add(Reading hit){
+  myStats.addHit(hit);
 }
