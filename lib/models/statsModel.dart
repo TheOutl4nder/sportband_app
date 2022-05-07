@@ -14,4 +14,11 @@ class statsModel extends ChangeNotifier{
     accRec=generateRecommendation(r);
     notifyListeners();
   }
+
+  void restart(){
+    HitCount=0;
+    axisRec="";
+    accRec="";
+    notifyListeners();
+  }
 }

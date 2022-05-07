@@ -58,9 +58,9 @@ postData(Reading read) async{
   var response = http.post(Uri.parse("https://api.thingspeak.com/update.json"),
     body: {
     "api_key": dotenv.env['APIKEY'],
-    "field1": read.axis_X.toString(),
+    /*"field1": read.axis_X.toString(),
     "field2": read.axis_Y.toString(),
-    "field3": read.axis_Z.toString(),
+    "field3": read.axis_Z.toString(),*/
     "field4": read.acc_X.toString(),
     "field5": read.acc_Y.toString(),
     "field6": read.acc_Z.toString(),
@@ -69,6 +69,7 @@ postData(Reading read) async{
 }
 
 startSession(){
+  myStats.restart();
   DateTime start = DateTime.now();
   currentSession = sessionData(start);
   print("started session at:"+start.toString());
@@ -116,4 +117,5 @@ getMonthStr(int month){
 
 add(Reading hit){
   myStats.addHit(hit);
+  currentSession.sessionHits.add(hit);
 }

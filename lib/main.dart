@@ -50,7 +50,7 @@ startServer()async{
   await for (var request in server){
     var parsed;
     if(request.method=='GET'){
-      print(request.uri.queryParameters["axisX"]);
+      print(request.uri.queryParameters["accX"]);
       Reading read = generateReading(request.uri.queryParameters);
       add(read);
     }
@@ -74,12 +74,12 @@ void showToastMessage(String message){
 }
 
 Reading generateReading(Map paramMap){
-  double axisX = double.parse(paramMap["axisX"]);
+  /*double axisX = double.parse(paramMap["axisX"]);
   double axisY = double.parse(paramMap["axisY"]);
-  double axisZ = double.parse(paramMap["axisZ"]);
+  double axisZ = double.parse(paramMap["axisZ"]);*/
   double accX = double.parse(paramMap["accX"]);
   double accY = double.parse(paramMap["accY"]);
   double accZ = double.parse(paramMap["accZ"]);
-  return Reading(axisX, axisY, axisZ, accX, accY, accZ);
+  return Reading(0, 0, 0, accX, accY, accZ);
 }
 
