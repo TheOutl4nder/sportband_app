@@ -49,12 +49,9 @@ startServer()async{
   showToastMessage("Server is running on: "+server.address.toString()+":8080");
   await for (var request in server){
     var parsed;
-    if(request.method=='POST'){
-      var reqSets=await utf8.decoder.bind(request).join();
-      var params = Uri(query: reqSets).queryParameters;
-      print(params);
-      Reading read = generateReading(params.entries.toString());
-      //Reading recievedReading = Reading(parsed['AxisX'] as double, parsed['AxisY'] as double, parsed['AxisZ'] as double, parsed['AccX'] as double, parsed['AccY'] as double, parsed['AccZ'] as double);
+    if(request.method=='GET'){
+      print(request.uri.queryParameters["axisX"]);
+      Reading read = generateReading(request.uri.queryParameters);
       add(read);
     }
     request.response
@@ -76,8 +73,13 @@ void showToastMessage(String message){
   );
 }
 
-Reading generateReading(String parameters){
-  
-  return Reading(0, 0, 0, 0, 0, 0);
+Reading generateReading(Map paramMap){
+  double axisX = double.parse(paramMap["axisX"]);
+  double axisY = double.parse(paramMap["axisY"]);
+  double axisZ = double.parse(paramMap["axisZ"]);
+  double accX = double.parse(paramMap["accX"]);
+  double accY = double.parse(paramMap["accY"]);
+  double accZ = double.parse(paramMap["accZ"]);
+  return Reading(axisX, axisY, axisZ, accX, accY, accZ);
 }
 
